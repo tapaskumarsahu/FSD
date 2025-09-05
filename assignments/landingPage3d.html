@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VoyageX — 3D Travel Landing Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Montserrat:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0f1e;
+        --fg: #eaf2ff;
+        --primary: #6bdcff;
+        --accent: #ff7ad9;
+        --glow: 0 0 30px rgba(107, 220, 255, 0.55),
+          0 0 80px rgba(255, 122, 217, 0.35);
+        --radius: 18px;
+        --glass: rgba(255, 255, 255, 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
+          Arial, sans-serif;
+        color: var(--fg);
+        background: radial-gradient(
+            1200px 800px at 10% -10%,
+            #1b2647 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            1000px 1000px at 120% 10%,
+            #2a0a2e 0%,
+            transparent 60%
+          ),
+          linear-gradient(180deg, #070a16 0%, #0a0f1e 50%, #070a16 100%);
+        overflow-x: hidden;
+        perspective: 1200px; /* 3D context */
+      }
+
+      /* Subtle animated starfield / parallax dots */
+      .stars,
+      .stars:before,
+      .stars:after {
+        position: fixed;
+        inset: 0;
+        content: "";
+        pointer-events: none;
+        background-image: radial-gradient(
+            2px 2px at 20% 30%,
+            rgba(255, 255, 255, 0.35) 50%,
+            transparent 52%
+          ),
+          radial-gradient(
+            1px 1px at 70% 60%,
+            rgba(255, 255, 255, 0.25) 50%,
+            transparent 52%
+          ),
+          radial-gradient(
+            1.5px 1.5px at 40% 80%,
+            rgba(255, 255, 255, 0.18) 50%,
+            transparent 52%
+          );
+        animation: drift 120s linear infinite;
+      }
+      .stars:before {
+        animation-duration: 160s;
+        opacity: 0.6;
+        filter: blur(0.6px);
+      }
+      .stars:after {
+        animation-duration: 200s;
+        opacity: 0.3;
+        filter: blur(1.2px);
+      }
+      @keyframes drift {
+        to {
+          transform: translateY(-1000px);
+        }
+      }
+
+      /* Glassy top nav */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 16px auto;
+        width: min(1100px, 92%);
+        padding: 14px 18px;
+        border-radius: var(--radius);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.14),
+          rgba(255, 255, 255, 0.04)
+        );
+        backdrop-filter: blur(14px) saturate(120%);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+      }
+      .logo {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(
+          circle at 30% 30%,
+          #9df,
+          #59f 60%,
+          #36d 100%
+        );
+        box-shadow: var(--glow);
+        transform: translateZ(10px);
+      }
+      .logo svg {
+        width: 22px;
+        height: 22px;
+        opacity: 0.95;
+      }
+      .nav a {
+        color: var(--fg);
+        text-decoration: none;
+        margin: 0 10px;
+        opacity: 0.85;
+      }
+      .nav a:hover {
+        opacity: 1;
+        text-shadow: var(--glow);
+      }
+      .cta {
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: linear-gradient(180deg, #7ae7ff, #63d4ff 40%, #4cc2ff);
+        color: #00131f;
+        box-shadow: 0 10px 30px rgba(99, 212, 255, 0.45);
+        transform: translateZ(20px);
+      }
+      .cta:hover {
+        transform: translateZ(20px) translateY(-2px);
+      }
+
+      /* HERO */
+      .hero {
+        position: relative;
+        width: min(1200px, 92%);
+        margin: 40px auto 80px;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 28px;
+        align-items: center;
+      }
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+      }
+
+      .title3d {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 900;
+        line-height: 0.95;
+        letter-spacing: 0.5px;
+        font-size: clamp(2.2rem, 5vw + 0.5rem, 5rem);
+        margin: 12px 0 18px;
+        position: relative;
+        display: inline-block;
+        transform: rotateX(12deg) rotateY(-14deg) translateZ(0);
+        transform-style: preserve-3d;
+        color: #e6f7ff;
+        text-shadow: 0 1px 0 #c2e9ff, 0 2px 0 #a3dfff, 0 3px 0 #85d5ff,
+          0 4px 0 #67cbff, 0 5px 10px rgba(103, 203, 255, 0.6);
+      }
+      .subtitle {
+        max-width: 56ch;
+        opacity: 0.9;
+        font-weight: 300;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        margin-top: 26px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .btn-deep {
+        padding: 14px 22px;
+        border-radius: 14px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(
+          180deg,
+          #ffb6ec 0%,
+          #ff7ad9 60%,
+          #f056c8 100%
+        );
+        color: #2a0030;
+        box-shadow: 0 18px 40px rgba(240, 86, 200, 0.45),
+          inset 0 -8px 18px rgba(0, 0, 0, 0.25);
+        transform: translateZ(25px);
+      }
+      .btn-ghost {
+        padding: 14px 22px;
+        border-radius: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.14),
+          rgba(255, 255, 255, 0.06)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: var(--fg);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      }
+      .btn-deep:hover,
+      .btn-ghost:hover {
+        transform: translateZ(25px) translateY(-3px);
+      }
+
+      /* 3D Globe + Plane scene */
+      .scene {
+        position: relative;
+        height: 420px;
+        border-radius: var(--radius);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.03)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(10px) saturate(120%);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        transform-style: preserve-3d;
+      }
+      .globe {
+        position: absolute;
+        width: 520px;
+        height: 520px;
+        border-radius: 50%;
+        right: -120px;
+        top: -90px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          #baf0ff,
+          #6ad7ff 45%,
+          #3aa0e3 70%,
+          #1c5aa8 100%
+        );
+        box-shadow: inset -40px -60px 120px rgba(0, 0, 0, 0.25),
+          0 0 80px rgba(99, 212, 255, 0.35);
+        transform: translateZ(60px) rotateX(18deg);
+        animation: globeSpin 28s linear infinite;
+      }
+      @keyframes globeSpin {
+        to {
+          transform: translateZ(60px) rotateX(18deg) rotate(360deg);
+        }
+      }
+      .lat,
+      .lon {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+      }
+      .lat {
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+      }
+      .lon {
+        transform: rotate(60deg);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+      }
+
+      .plane {
+        position: absolute;
+        left: -120px;
+        top: 60%;
+        width: 180px;
+        aspect-ratio: 3 / 1;
+        background: linear-gradient(90deg, #fff, #e6f7ff);
+        clip-path: polygon(
+          0 40%,
+          72% 40%,
+          72% 10%,
+          100% 50%,
+          72% 90%,
+          72% 60%,
+          0 60%
+        );
+        border-radius: 8px;
+        box-shadow: 0 22px 50px rgba(255, 255, 255, 0.15);
+        animation: fly 12s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+        transform: translateZ(80px);
+      }
+      @keyframes fly {
+        0% {
+          transform: translate(-20%, 0) translateZ(80px) rotateZ(-8deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        50% {
+          transform: translate(130%, -120%) translateZ(120px) rotateZ(6deg);
+        }
+        100% {
+          transform: translate(280%, -240%) translateZ(160px) rotateZ(12deg);
+          opacity: 0;
+        }
+      }
+
+      /* Destinations Grid with 3D hover */
+      .section {
+        width: min(1200px, 92%);
+        margin: 0 auto 110px;
+      }
+      .section h3 {
+        font-size: clamp(1.4rem, 1.2rem + 1.2vw, 2.2rem);
+        margin: 10px 0 18px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        height: 260px;
+        transform: rotateX(10deg) rotateY(-8deg);
+        transform-style: preserve-3d;
+        transition: 0.35s ease;
+        box-shadow: 0 35px 80px rgba(0, 0, 0, 0.5);
+        background: #0d1224;
+      }
+      .card:hover {
+        transform: rotateX(0) rotateY(0) translateY(-6px);
+      }
+      .card img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.9;
+        filter: contrast(1.05) saturate(1.1);
+      }
+      .card .layer {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0),
+          rgba(10, 15, 30, 0.75)
+        );
+      }
+      .card .meta {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 14px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .tag {
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.22),
+          rgba(255, 255, 255, 0.08)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(6px);
+      }
+      .price {
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-shadow: var(--glow);
+      }
+
+      /* Testimonials (3D stack) */
+      .stack {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+      @media (max-width: 900px) {
+        .stack {
+          grid-template-columns: 1fr;
+        }
+      }
+      .tile {
+        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        transform: translateZ(16px);
+        transition: transform 0.3s ease;
+      }
+      .tile:hover {
+        transform: translateZ(22px) translateY(-4px) rotateX(2deg);
+      }
+      .who {
+        font-weight: 600;
+        opacity: 0.9;
+      }
+      .says {
+        opacity: 0.85;
+        line-height: 1.7;
+      }
+
+      footer {
+        text-align: center;
+        opacity: 0.7;
+        padding: 50px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="#00131f"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.5 10.5c.7.4.7 1.4 0 1.8l-5.4 3.1-2.1 5.4c-.3.7-1.3.7-1.7 0l-1.6-4-4-.6c-.8-.1-1.1-1.2-.5-1.7l12.8-11c.6-.5 1.6 0 1.4.8l-1.7 6.2 2.8 1.0z"
+            />
+          </svg>
+        </div>
+        VOYAGEX
+      </div>
+      <div>
+        <a href="#destinations">Destinations</a>
+        <a href="#stories">Stories</a>
+        <a href="#contact" class="cta">Book Now</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <h1 class="title3d">
+          Make Your Next <span style="color: var(--primary)">Trip</span><br />
+          Feel <span style="color: var(--accent)">3‑Dimensional</span>
+        </h1>
+        <p class="subtitle">
+          Premium journeys, crafted with immersive experiences. Fly over coral
+          atolls, hike through neon dusk canyons, and sleep under
+          galaxies—curated by experts who obsess over the details.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-deep">Start Planning</button>
+          <button class="btn-ghost">Live Deals</button>
+        </div>
+      </div>
+      <div class="scene" aria-hidden="true">
+        <div class="globe">
+          <div class="lat"></div>
+          <div class="lon"></div>
+        </div>
+        <div class="plane"></div>
+      </div>
+    </header>
+
+    <section id="destinations" class="section">
+      <h3>Featured 3D Destinations</h3>
+      <div class="grid">
+        <article class="card">
+          <img
+            alt="Santorini cliffs"
+            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop"
+          />
+          <div class="layer"></div>
+          <div class="meta">
+            <span class="tag">Greece</span>
+            <span class="price">₹59,999</span>
+          </div>
+        </article>
+        <article class="card">
+          <img
+            alt="Kyoto shrine"
+            src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?q=80&w=1600&auto=format&fit=crop"
+          />
+          <div class="layer"></div>
+          <div class="meta">
+            <span class="tag">Japan</span>
+            <span class="price">₹89,999</span>
+          </div>
+        </article>
+        <article class="card">
+          <img
+            alt="Bali rice terraces"
+            src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1600&auto=format&fit=crop"
+          />
+          <div class="layer"></div>
+          <div class="meta">
+            <span class="tag">Bali</span>
+            <span class="price">₹49,499</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="stories" class="section">
+      <h3>Travellers say it feels unreal</h3>
+      <div class="stack">
+        <div class="tile">
+          <div class="who">Aarav • Maldives Explorer</div>
+          <p class="says">
+            “That floating seaplane over the turquoise globe? That was literally
+            our arrival. The itinerary eased between adventure and rest—10/10.”
+          </p>
+        </div>
+        <div class="tile">
+          <div class="who">Mira • Kyoto Wanderer</div>
+          <p class="says">
+            “The layers of culture and food were curated like a 3D scene—every
+            depth had a surprise.”
+          </p>
+        </div>
+        <div class="tile">
+          <div class="who">Dev • Santorini Dreamer</div>
+          <p class="says">
+            “Sunsets felt cinematic. We just showed up—VoyageX handled the
+            magic.”
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contact">© 2025 VoyageX • Crafted for explorers</footer>
+  </body>
+</html>

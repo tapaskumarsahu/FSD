@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* child selector */
+      .container > p {
+        background-color: yellowgreen;
+      }
+      /* descendent selector */
+      .container p {
+        color: blueviolet;
+      }
+      /* next sibling selector */
+      .para + p {
+        font-size: 26px;
+        font-style: italic;
+      }
+      /* next sibling selector */
+      .para1 + div {
+        border: 1px solid red;
+      }
+      /* subsequent sibling selector */
+      .para1 ~ div {
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p class="para1">this is para 1</p>
+      <div class="child">
+        <p>this is para 2</p>
+      </div>
+      <div class="child">
+        <p>this is para 3</p>
+      </div>
+      <p class="para">this is para 4</p>
+      <p>this is para 5</p>
+    </div>
+  </body>
+</html>
