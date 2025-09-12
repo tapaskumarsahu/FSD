@@ -1,3 +1,4 @@
+//construtor functions receives  the value and creates the objects when invoked
 function mobile(name, price, brand) {
   this.name = name;
   this.price = price;
