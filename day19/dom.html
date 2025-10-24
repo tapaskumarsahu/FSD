@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="heading">Hello world!</h1>
+    <p class="para">hellof</p>
+    <p class="para">hellog</p>
+    <p class="para">hellos</p>
+    <p class="para">hellof</p>
+    <div class="box">box1s</div>
+    <div class="box">box2</div>
+    <script>
+      let element = document.getElementsByTagName("p");
+      console.log(element);
+      let element2 = document.getElementById("heading").innerText;
+      console.log(element2);
+      let box = document.getElementsByClassName("box");
+      console.log(box);
+      let paragraph = document.getElementsByClassName("para");
+      for (let i = 0; i < paragraph.length; i++) {
+        console.log(paragraph[i].innerText);
+      }
+      let allHeading = document.getElementsByTagName("h1");
+      console.log(allHeading);
+    </script>
+  </body>
+</html>

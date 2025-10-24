@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Photo Editor</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="thumbnails" id="thumbnails">
+          <!-- Thumbnails will be injected by JS -->
+        </div>
+      </aside>
+      <main class="main-content">
+        <div class="image-area">
+          <img id="mainImage" src="assets/img1.jpg" alt="Main" />
+          <div class="caption" id="caption">Caption</div>
+        </div>
+      </main>
+      <aside class="settings-panel">
+        <div class="panel-section">
+          <h2>Font Effects</h2>
+          <label
+            >font family
+            <select id="fontFamily">
+              <option value="Arial">Arial</option>
+              <option value="Verdana">Verdana</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Courier New">Courier New</option>
+            </select>
+          </label>
+          <label
+            >font size
+            <input type="number" id="fontSize" value="25" min="10" max="50" />
+          </label>
+          <label
+            >font alignment
+            <select id="fontAlign">
+              <option value="left">left</option>
+              <option value="center">center</option>
+              <option value="right">right</option>
+            </select>
+          </label>
+        </div>
+        <div class="panel-section">
+          <h2>Image effects</h2>
+          <label><input type="checkbox" id="sepia" /> sepia effect</label>
+          <label
+            ><input type="checkbox" id="grayscale" /> grayscale effect</label
+          >
+          <label><input type="checkbox" id="blur" /> blur effect</label>
+        </div>
+        <div class="panel-section">
+          <button id="applyBtn">Apply</button>
+          <button id="resetBtn">Reset</button>
+        </div>
+      </aside>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
